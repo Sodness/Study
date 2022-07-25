@@ -1,16 +1,18 @@
 #include <stdio.h>
+#include <string.h>
 
-int main()
+void main()
 {
+	int re, len;
 	char str[10];
-	int i;
 
-	printf("문자열을 입력 ==>");
-	scanf_s("%s", str, sizeof(str));
+	printf("문자열을 입력 ==> ");
+	gets_s(str, 9);
 
-	for (i = sizeof(str) -1; i >= 0; i--)
-	{
-		printf("%c", str[i]);
-	}
-	printf("\n");
+	len = strlen(str);
+
+	for (re = len - 1; re >= 0; re--)
+		printf("%c", str[re]);
+
+	printf("\n\n %d", len);
 }
