@@ -1,0 +1,346 @@
+<!-- 참고 사이트 -->
+<!--
+https://developer.mozilla.org/ko/docs/Web/CSS/CSS_Images/Using_CSS_gradients
+https://developer.mozilla.org/ko/docs/Web/CSS/background-clip
+https://www.youtube.com/watch?v=fAHI1uqObjY&list=WL&index=6&t=332s
+https://www.youtube.com/watch?v=ccO2B40zkv4&list=WL&index=3
+https://www.youtube.com/watch?v=yXFiTDfhSXo&list=WL&index=4
+https://stackoverflow.com/questions/15998561/modify-background-webkit-gradient-with-javascript
+https://www.w3schools.com/jsref/prop_style_background.asp
+https://stackoverflow.com/questions/708895/how-to-set-the-style-webkit-transform-dynamically-using-javascript
+https://stackoverflow.com/questions/49649054/why-is-my-webkit-background-clip-not-working-on-text
+https://stackoverflow.com/questions/15071062/using-javascript-to-edit-css-gradient
+https://developer.mozilla.org/en-US/docs/Web/CSS/gradient/linear-gradient
+https://velog.io/@yoojs1205/linear-gradient-%EA%B7%B8%EB%9D%BC%EB%8D%B0%EC%9D%B4%EC%85%98
+https://stackoverflow.com/questions/26642023/how-to-properly-assign-style-backgroundclip-text
+https://hohoya33.tistory.com/116
+-->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>clock</title>
+
+    <script src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+
+    </style>
+  </head>
+
+
+  <body>
+    <div class="container">
+      <div id="clockOuter" class="clockOuter">
+        <span></span>
+      </div>
+      <div class="clock">
+        <div id="sc" class="circle" style="--clr:#04fc43;"><span id="scCircle"></span></div>
+        <div id="mn" class="circle circle2" style="--clr:#fee800;"><i></i></div>
+        <div id="hr" class="circle circle3" style="--clr:#ff2972;"><i></i></div>
+
+        <span style="--i:1;"><b id="clockNum1" class="clockNum" style="--clr:#e9a585;">1</b></span>
+        <span style="--i:2;"><b id="clockNum2" class="clockNum" style="--clr:#cbcb8e;">2</b></span>
+        <span style="--i:3;"><b id="clockNum3" class="clockNum" style="--clr:#a4ec87;">3</b></span>
+        <span style="--i:4;"><b id="clockNum4" class="clockNum" style="--clr:#7cfa6f;">4</b></span>
+        <span style="--i:5;"><b id="clockNum5" class="clockNum" style="--clr:#92e29b;">5</b></span>
+        <span style="--i:6;"><b id="clockNum6" class="clockNum" style="--clr:#9ac4bf;">6</b></span>
+        <span style="--i:7;"><b id="clockNum7" class="clockNum" style="--clr:#92a0dc;">7</b></span>
+        <span style="--i:8;"><b id="clockNum8" class="clockNum" style="--clr:#7e7eed;">8</b></span>
+        <span style="--i:9;"><b id="clockNum9" class="clockNum" style="--clr:#a496da;">9</b></span>
+        <span style="--i:10;"><b id="clockNum10" class="clockNum" style="--clr:#cc9db9;">10</b></span>
+        <span style="--i:11;"><b id="clockNum11" class="clockNum" style="--clr:#e99495;">11</b></span>
+        <span style="--i:12;"><b id="clockNum12" class="clockNum" style="--clr:#fa7b6e;">12</b></span>
+      </div>
+
+      <div id="time">
+        <div id="hours" style="--clr:#ff2972;">00</div>
+        <div id="minutes" style="--clr:#fee800;">00</div>
+        <div id="seconds" style="--clr:#04fc43;">00</div>
+        <div id="ampm"></div>
+      </div>
+
+    <script>
+      let hr = document.querySelector('#hr');
+      let mn = document.querySelector('#mn');
+      let sc = document.querySelector('#sc');
+      var hourFlag = true;
+
+      var clockNumColors =
+        ['#ffffff',
+        '#e9a585', '#cbcb8e', '#a4ec87', '#7cfa6f',
+        '#92e29b', '#9ac4bf', '#92a0dc', '#7e7eed',
+        '#a496da', '#cc9db9', '#e99495', '#fa7b6e'];
+
+        // set scCircle color
+        let scCircle = document.getElementById('scCircle');
+        let h = new Date().getHours();
+        let m = new Date().getMinutes();
+        if(h > 12) {
+          h = h - 12;
+        }
+        else if(h == 0) {
+          h = 12;
+        }
+        scCircle.style.background = clockNumColors[h];
+
+      // activate clockNum
+      for(let i=1; i<h+1; i++) {
+        if(h == 12) {
+          let clockNum = document.getElementById('clockNum'+12);
+          // clockNum.style.color = clockNumColors[i];
+          // clockNum.style.opacity = 1;
+          // clockNum.style.background = `linear-gradient(#FFF ${85-m}%, ${clockNumColors[12]} 25%)`;
+          // clockNum.style.webkitBackgroundClip = "text";
+          // clockNum.style.webkitTextFillColor = "transparent";
+          clockNum.setAttribute("style",
+            `color: ${clockNumColors[i]};`
+            + "opacity: 1;"
+            + `background: linear-gradient(#FFF ${85-m}%, ${clockNumColors[i]} 25%);`
+            + "-webkit-background-clip: text;"
+            + "-webkit-text-fill-color: transparent;");
+          break;
+        }
+        else if(i == h) {
+          let clockNum = document.getElementById('clockNum'+i);
+          clockNum.setAttribute("style",
+            `color: ${clockNumColors[i]};`
+            + "opacity: 1;"
+            + `background: linear-gradient(#FFF ${85-m}%, ${clockNumColors[i]} 25%);`
+            + "-webkit-background-clip: text;"
+            + "-webkit-text-fill-color: transparent;");
+        }
+        else {
+          let clockNum = document.getElementById('clockNum'+i);
+          clockNum.setAttribute("style",
+            `color: ${clockNumColors[i]};`
+            + "opacity: 1;"
+            + `background: linear-gradient(#FFF 25%, ${clockNumColors[i]} 25%);`
+            + "-webkit-background-clip: text;"
+            + "-webkit-text-fill-color: transparent;");
+        }
+        let clockNum = document.getElementById('clockNum'+12);
+        clockNum.setAttribute("style",
+          `color: ${clockNumColors[12]};`
+          + "opacity: 1;"
+          + `background: linear-gradient(#FFF 25%, ${clockNumColors[12]} 25%);`
+          + "-webkit-background-clip: text;"
+          + "-webkit-text-fill-color: transparent;");
+      }
+
+      setInterval(() => {
+        // update hour, minute, second by 100 msec
+        let day = new Date();
+        let hh = day.getHours() * 30;
+        let mm = day.getMinutes() * 6;
+        let ss = day.getSeconds() * 6;
+        let ampmCh = "";
+
+        hr.style.transform = `rotateZ(${hh+(mm/12)}deg)`;
+        mn.style.transform = `rotateZ(${mm}deg)`;
+        sc.style.transform = `rotateZ(${ss}deg)`;
+
+        let hours = document.getElementById('hours');
+        let minutes = document.getElementById('minutes');
+        let seconds = document.getElementById('seconds');
+        let ampm = document.getElementById('ampm');
+        ampmCh = ampm.innerHTML;
+
+        let h = new Date().getHours();
+        let m = new Date().getMinutes();
+        let s = new Date().getSeconds();
+        //console.log(h);
+
+        let am = h >= 12 ? "PM" : "AM";
+
+        if(h > 12) {
+          h = h - 12;
+        }
+        else if(h == 0) {
+          h = 12;
+          am = "AM";
+        }
+
+        h = (h < 10) ? "0"+h : h;
+        m = (m < 10) ? "0"+m : m;
+        s = (s < 10) ? "0"+s : s;
+
+        hours.innerHTML = h;
+        minutes.innerHTML = m;
+        seconds.innerHTML = s;
+        ampm.innerHTML = am;
+
+        // fill clockNum by 1 minute
+        if(s == "00") {
+          clockNumUpdate();
+        }
+
+        // update by 1 hour
+        if(m == "00" && s == "00" && hourFlag) {
+          // change scCircle
+          let scCircle = document.getElementById('scCircle');
+          let h = new Date().getHours();
+          if(h > 12) {
+            h = h - 12;
+          }
+          else if(h == 0) {
+            h = 12;
+          }
+          scCircle.style.background = clockNumColors[h];
+
+          // update clockNum by 1 hour
+          let i =1;
+          for(i=1; i<h+1; i++) {
+            if(h == 12) {
+              let clockNum = document.getElementById('clockNum'+12);
+              clockNum.setAttribute("style",
+                `color: ${clockNumColors[i]};`
+                + "opacity: 1;"
+                + `background: linear-gradient(#FFF ${85-m}%, ${clockNumColors[12]} 25%);`
+                + "-webkit-background-clip: text;"
+                + "-webkit-text-fill-color: transparent;");
+              break;
+            }
+            else if(i == h) {
+              let clockNum = document.getElementById('clockNum'+i);
+              clockNum.setAttribute("style",
+                `color: ${clockNumColors[i]};`
+                + "opacity: 1;"
+                + `background: linear-gradient(#FFF ${85-m}%, ${clockNumColors[i]} 25%);`
+                + "-webkit-background-clip: text;"
+                + "-webkit-text-fill-color: transparent;");
+
+              clockNum = document.getElementById('clockNum'+12);
+              clockNum.setAttribute("style",
+                `color: ${clockNumColors[12]};`
+                + "opacity: 1;"
+                + `background: linear-gradient(#FFF 25%, ${clockNumColors[12]} 25%);`
+                + "-webkit-background-clip: text;"
+                + "-webkit-text-fill-color: transparent;");
+            }
+            else {
+              let clockNum = document.getElementById('clockNum'+i);
+              clockNum.setAttribute("style",
+                `color: ${clockNumColors[i]};`
+                + "opacity: 1;"
+                + `background: linear-gradient(#FFF 25%, ${clockNumColors[i]} 25%);`
+                + "-webkit-background-clip: text;"
+                + "-webkit-text-fill-color: transparent;");
+            }
+          }
+
+          hourFlag = false;
+        }
+
+        // init all clockNum
+        if(h=="12" && m=="00" && s=="00") {
+          for(let i=1; i<13; i++) {
+            if(i==12) {
+              let clockNum = document.getElementById('clockNum'+i);
+              clockNum.setAttribute("style",
+                `color: ${clockNumColors[0]};`
+                + "opacity: 1;"
+                + `background: linear-gradient(#FFF 25%, ${clockNumColors[i]} 25%);`
+                + "-webkit-background-clip: text;"
+                + "-webkit-text-fill-color: transparent;");
+            }
+            else {
+              let clockNum = document.getElementById('clockNum'+i);
+              clockNum.setAttribute("style",
+                `color: ${clockNumColors[0]};`
+                + "opacity: 0.25;"
+                + `background: linear-gradient(#FFF 85%, ${clockNumColors[i]} 25%);`
+                + "-webkit-background-clip: text;"
+                + "-webkit-text-fill-color: transparent;");
+            }
+          }
+        }
+      }, 100);
+
+      // fill clockNum by 1 minute
+      function clockNumUpdate() {
+        let h = new Date().getHours();
+        if(h > 12) {
+          h = h - 12;
+        }
+        else if(h == 0) {
+          h = 12;
+        }
+        let m = new Date().getMinutes();
+        let clockNum = document.getElementById('clockNum'+h);
+        clockNum.setAttribute("style",
+          "opacity: 1;"
+          + `background: linear-gradient(#FFF ${85-m}%, ${clockNumColors[h]} 25%);`
+          + "-webkit-background-clip: text;"
+          + "-webkit-text-fill-color: transparent;");
+      }
+
+      // browser hidden -> visible
+      function visibilitychange() {
+        let h = new Date().getHours();
+        let m = new Date().getMinutes();
+        if(h > 12) {
+          h = h - 12;
+        }
+        else if(h == 0) {
+          h = 12;
+        }
+        if(document.hidden) {
+
+        }
+        else {
+          // activate clockNum
+          for(let i=1; i<h+1; i++) {
+            if(h == 12) {
+              let clockNum = document.getElementById('clockNum'+12);
+              // clockNum.style.color = clockNumColors[i];
+              // clockNum.style.opacity = 1;
+              // clockNum.style.background = `linear-gradient(#FFF ${85-m}%, ${clockNumColors[12]} 25%)`;
+              // clockNum.style.webkitBackgroundClip = "text";
+              // clockNum.style.webkitTextFillColor = "transparent";
+              clockNum.setAttribute("style",
+                `color: ${clockNumColors[i]};`
+                + "opacity: 1;"
+                + `background: linear-gradient(#FFF ${85-m}%, ${clockNumColors[i]} 25%);`
+                + "-webkit-background-clip: text;"
+                + "-webkit-text-fill-color: transparent;");
+              break;
+            }
+            else if(i == h) {
+              let clockNum = document.getElementById('clockNum'+i);
+              clockNum.setAttribute("style",
+                `color: ${clockNumColors[i]};`
+                + "opacity: 1;"
+                + `background: linear-gradient(#FFF ${85-m}%, ${clockNumColors[i]} 25%);`
+                + "-webkit-background-clip: text;"
+                + "-webkit-text-fill-color: transparent;");
+            }
+            else {
+              let clockNum = document.getElementById('clockNum'+i);
+              clockNum.setAttribute("style",
+                `color: ${clockNumColors[i]};`
+                + "opacity: 1;"
+                + `background: linear-gradient(#FFF 25%, ${clockNumColors[i]} 25%);`
+                + "-webkit-background-clip: text;"
+                + "-webkit-text-fill-color: transparent;");
+            }
+            let clockNum = document.getElementById('clockNum'+12);
+            clockNum.setAttribute("style",
+              `color: ${clockNumColors[12]};`
+              + "opacity: 1;"
+              + `background: linear-gradient(#FFF 25%, ${clockNumColors[12]} 25%);`
+              + "-webkit-background-clip: text;"
+              + "-webkit-text-fill-color: transparent;");
+          }
+
+          // set scCircle color
+          let scCircle = document.getElementById('scCircle');
+          scCircle.style.background = clockNumColors[h];
+        }
+      }
+      document.addEventListener("visibilitychange", visibilitychange, false);
+    </script>
+  </body>
+</html>
